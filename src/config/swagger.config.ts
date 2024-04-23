@@ -5,8 +5,8 @@ export class SwaggerConfig {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	static build(mainModule: any, app: INestApplication, path: string): void {
 		const config = new DocumentBuilder()
-			.setTitle("Messages API")
-			.setDescription("API for studies")
+			.setTitle("Switch API")
+			.setDescription("This is the backend of the swith inc.")
 			.setVersion("1.0")
 			.build();
 		const options: SwaggerDocumentOptions = {
