@@ -5,7 +5,7 @@ import { SwaggerConfigService } from "./config/swaggger/configuration.service";
 import { AppConfigService } from "./config/app/configuration.service";
 
 async function bootstrap() {
-	const app = await NestFactory.create(AppModule);
+	const app = await NestFactory.create(AppModule, { cors: true });
 	const appConfig = app.get(AppConfigService);
 	const swaggerConfig = app.get(SwaggerConfigService);
 
