@@ -27,7 +27,6 @@ export class AppGateway implements OnGatewayConnection, OnGatewayInit, OnGateway
     @SubscribeMessage("teste")
     handleTeste(socket: Socket, payload: any) {
     	console.log("entrou no teste");
-        
     }
 
     @SubscribeMessage("connection")
