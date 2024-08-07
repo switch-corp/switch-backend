@@ -7,10 +7,12 @@ import { Socket, Server } from "socket.io";
 
 @WebSocketGateway({ namespace: "app", cors: true })
 export class AppGateway implements OnGatewayConnection, OnGatewayInit, OnGatewayDisconnect {
-
-	private readonly logger: Logger = new Logger("AppGateway");
-
     @WebSocketServer() io: Server;
+
+    private readonly logger: Logger = new Logger("AppGateway");
+
+    constructor (){
+    }
 
     afterInit(server: Server) {
     	this.logger.log("Starting AppGateway socket");
@@ -27,12 +29,6 @@ export class AppGateway implements OnGatewayConnection, OnGatewayInit, OnGateway
     @SubscribeMessage("teste")
     handleTeste(socket: Socket, payload: any) {
     	console.log("entrou no teste");
+    	console.log(payload);
     }
-
-    @SubscribeMessage("connection")
-    handleMessage(socket: Socket, payload: any) {
-    	console.log("entrou no connection");
-    	this.io.emit("currentName", { nickName: "teste" });
-    }
-
 }
