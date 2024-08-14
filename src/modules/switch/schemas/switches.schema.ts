@@ -7,6 +7,9 @@ export class Switches {
     name: string;
 
     @Prop({ required: true })
+    arduino_id: string;
+
+    @Prop({ required: true })
     is_acive: boolean;
 }
 
