@@ -10,7 +10,8 @@ import { MongoConfigService } from "src/config/database/mongo/configuration.serv
 			useFactory: async (mongoConfigService: MongoConfigService) => ({
 				uri: mongoConfigService.uri,
 				dbName: "switch",
-				autoCreate: true
+				autoCreate: true,
+				ssl: true
 			}),
 			inject: [MongoConfigService]
 		} as MongooseModuleAsyncOptions)
