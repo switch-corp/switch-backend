@@ -6,4 +6,8 @@ export class CreateSwitchDto {
 	@IsString()
 	@ApiProperty()
 	name: string;
+
+	@IsString()
+	@ApiProperty()
+	arduino_id: string;
 }
