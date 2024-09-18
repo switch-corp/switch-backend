@@ -1,12 +1,14 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import { Injectable, Logger, OnModuleInit, UnauthorizedException } from "@nestjs/common";
+import { CronJob } from "cron";
 import { InjectModel } from "@nestjs/mongoose";
-import { Cron } from "@nestjs/schedule";
 import { Schedules } from "./schemas/schedules.schema";
 import { Model } from "mongoose";
 import { CreateScheduleDto } from "./dtos/create-schedule";
 import { EventEmitter } from "stream";
 import { SwitchService } from "../switch/switch.service";
+import { SwitchGateway } from "../switch/switch.gateway";
+import { SchedulerRegistry } from "@nestjs/schedule";
 
 @Injectable()
 export class ScheduleService implements OnModuleInit {
@@ -14,7 +16,9 @@ export class ScheduleService implements OnModuleInit {
 		@InjectModel(Schedules.name) 
 		private readonly scheduleModel: Model<Schedules>,
 		private readonly eventEmiter: EventEmitter,
-		private readonly switchservice: SwitchService
+		private readonly switchService: SwitchService,
+		private readonly switchGateway: SwitchGateway,
+		private schedulerRegistry: SchedulerRegistry
 	) {}
 
 	private readonly logger: Logger = new Logger(ScheduleService.name);
@@ -33,18 +37,31 @@ export class ScheduleService implements OnModuleInit {
 		return schedule;
 	}
 
+	teste(id: string, state: boolean) {
+		this.switchGateway.emitToSwitch(id, state);
+	}
+
 	async insertOne(data: CreateScheduleDto) {
-		// data.switches.map(async e => {
-		// 	await this.switchservice.findById(e);
-		// });
+		data.switches.map(async e => {
+			await this.switchService.findById(e);
+		});
 
-    	// const schedule = await this.scheduleModel.create({ ...data, is_active: false});
-    	// this.eventEmiter.emit("new-schedule", schedule);
-    	// return schedule; 
+    	const schedule = await this.scheduleModel.create({ ...data, is_active: false});
+    	this.eventEmiter.emit("new-schedule", schedule);
+		this.addCronJob("teste", "5");
+    	return schedule; 
 	}
 
-	@Cron("*/30 * * * * *")
-	handleCron() {
-		this.logger.debug("Called when the current second is 45");
-	}
+	addCronJob(name: string, seconds: string) {
+		const job = new CronJob(`${seconds} * * * * *`, () => {
+		  this.logger.warn(`time (${seconds}) for job ${name} to run!`);
+		});
+	  
+		this.schedulerRegistry.addCronJob(name, job);
+		job.start();
+	  
+		this.logger.warn(
+		  `job ${name} added for each minute at ${seconds} seconds!`,
+		);
+	  }
 }

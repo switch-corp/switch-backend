@@ -1,4 +1,5 @@
-import { Body, Controller, Post } from "@nestjs/common";
+/* eslint-disable no-mixed-spaces-and-tabs */
+import { Body, Controller, Param, Post } from "@nestjs/common";
 import { ScheduleService } from "./schedule.service";
 import { CreateScheduleDto } from "./dtos/create-schedule";
 import { ApiTags } from "@nestjs/swagger";
@@ -14,4 +15,9 @@ export class ScheduleController {
 	createSchedule(@Body() request: CreateScheduleDto) {
 		return this.scheduleService.insertOne(request);
 	}
+
+	@Post("/teste/:id")
+    teste(@Param("id") id: string){
+    	return this.scheduleService.teste(id, false);
+    }
 }

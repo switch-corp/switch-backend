@@ -13,6 +13,6 @@ import { SwitchGateway } from "./switch.gateway";
 	],
 	controllers: [SwitchController],
 	providers: [SwitchService, SwitchGateway],
-	exports: [SwitchService]
+	exports: [SwitchService, SwitchGateway]
 })
 export class SwitchModule {}

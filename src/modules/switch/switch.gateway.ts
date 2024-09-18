@@ -28,4 +28,8 @@ export class SwitchGateway implements OnGatewayConnection, OnGatewayInit, OnGate
     changeState(socket: Socket, payload: any){
     	socket.emit(payload.id, !payload.status);
     }
+
+    emitToSwitch(id: string, state: boolean) {
+    	this.io.emit(id, state);
+    }
 }

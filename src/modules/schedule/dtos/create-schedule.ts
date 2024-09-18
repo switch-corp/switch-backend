@@ -1,7 +1,6 @@
 /* eslint-disable indent */
 import { ApiProperty } from "@nestjs/swagger";
 import { IsArray, IsDateString, IsString } from "class-validator";
-import { Types } from "mongoose";
 
 export class CreateScheduleDto {
 	@IsString()
@@ -14,5 +13,5 @@ export class CreateScheduleDto {
 
 	@IsArray()
 	@ApiProperty()
-	switches: Types.ObjectId[];
+	switches: string[];
 }
