@@ -11,7 +11,8 @@ import { AuthGuard } from "src/common/guards/auth.guard";
 import { APP_GUARD } from "@nestjs/core";
 import { AuthConfigModule } from "src/config/auth/configuration.module";
 import { SwitchModule } from "./switch/switch.module";
-import { SwitchScheduleModule } from "./schedule/schedule.module";
+import { RoomsModule } from "./rooms/rooms.module";
+// import { SwitchScheduleModule } from "./schedule/schedule.module";
 
 @Module({
 	imports: [
@@ -20,7 +21,8 @@ import { SwitchScheduleModule } from "./schedule/schedule.module";
 		AuthConfigModule,
 		AuthModule,
 		UserModule,
-		SwitchScheduleModule,
+		RoomsModule,
+		// SwitchScheduleModule,
 		MongoDatabaseProviderModule,
 		SwaggerConfigModule,
 		SwitchModule,

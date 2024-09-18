@@ -22,7 +22,7 @@
         ],
         "linebreak-style": [
             "error",
-            "windows"
+            "unix"
         ],
         "quotes": [
             "error",
@@ -31,6 +31,10 @@
         "semi": [
             "error",
             "always"
+        ],
+        "import/no-unresolved": [
+            2,
+            { "caseSensitive": false }
         ],
         "@typescript-eslint/no-explicit-any": "off"
     }
