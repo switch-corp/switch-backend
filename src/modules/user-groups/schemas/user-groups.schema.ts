@@ -4,23 +4,23 @@ import { Document, Types } from "mongoose";
 
 @Schema({ versionKey: false })
 export class UserGroup extends Document {
-  @Prop({ required: true })
-  _id: string;
+	@Prop({ required: true })
+	_id: string;
 
-  @Prop({ required: true })
-  name: string;
+	@Prop({ required: true })
+	name: string;
 
-  @Prop({ type: [Types.ObjectId], ref: "Users", default: [] })
-  users: Types.ObjectId[];
+	@Prop({ type: [Types.ObjectId], ref: "Users", default: [] })
+	users: Types.ObjectId[];
 
-  @Prop({ type: [Types.ObjectId], ref: "Schedules", default: [] })
-  schedules: Types.ObjectId[];
+	@Prop({ type: [Types.ObjectId], ref: "Schedules", default: [] })
+	schedules: Types.ObjectId[];
 
-  @Prop({ type: [Types.ObjectId], ref: "Rooms", default: [] })
-  rooms: Types.ObjectId[];
+	@Prop({ type: [Types.ObjectId], ref: "Rooms", default: [] })
+	rooms: Types.ObjectId[];
 
-  @Prop({ type: [Types.ObjectId], ref: "Switches", default: [] })
-  switches: Types.ObjectId[];
+	@Prop({ type: [Types.ObjectId], ref: "Switches", default: [] })
+	switches: Types.ObjectId[];
 }
 
 export const UserGroupSchema = SchemaFactory.createForClass(UserGroup);

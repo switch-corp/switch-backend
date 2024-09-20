@@ -3,14 +3,14 @@ import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 
 @Schema({ versionKey: false })
 export class Switches {
-    @Prop({ required: true })
-    name: string;
+	@Prop({ required: true })
+	name: string;
 
-    @Prop({ required: true })
-    arduino_id: string;
+	@Prop({ required: true })
+	arduino_id: string;
 
-    @Prop({ required: true })
-    is_acive: boolean;
+	@Prop({ required: true })
+	is_active: boolean;
 }
 
 export const SwitchesSchema = SchemaFactory.createForClass(Switches);
