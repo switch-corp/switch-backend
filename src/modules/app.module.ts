@@ -12,6 +12,7 @@ import { APP_GUARD } from "@nestjs/core";
 import { AuthConfigModule } from "src/config/auth/configuration.module";
 import { SwitchModule } from "./switch/switch.module";
 import { RoomsModule } from "./rooms/rooms.module";
+import { UserGroupModule } from "./user-groups/user-groups.module";
 // import { SwitchScheduleModule } from "./schedule/schedule.module";
 
 @Module({
@@ -21,6 +22,7 @@ import { RoomsModule } from "./rooms/rooms.module";
 		AuthConfigModule,
 		AuthModule,
 		UserModule,
+		UserGroupModule,
 		RoomsModule,
 		// SwitchScheduleModule,
 		MongoDatabaseProviderModule,

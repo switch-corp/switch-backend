@@ -11,7 +11,7 @@ import { MongoConfigService } from "src/config/database/mongo/configuration.serv
 				uri: mongoConfigService.uri,
 				dbName: "switch",
 				autoCreate: true,
-				ssl: true
+				// ssl: true
 			}),
 			inject: [MongoConfigService]
 		} as MongooseModuleAsyncOptions)

@@ -5,9 +5,6 @@ import { Document, Types } from "mongoose";
 @Schema({ versionKey: false })
 export class UserGroup extends Document {
 	@Prop({ required: true })
-	_id: string;
-
-	@Prop({ required: true })
 	name: string;
 
 	@Prop({ type: [Types.ObjectId], ref: "Users", default: [] })
@@ -21,6 +18,9 @@ export class UserGroup extends Document {
 
 	@Prop({ type: [Types.ObjectId], ref: "Switches", default: [] })
 	switches: Types.ObjectId[];
+
+	@Prop({ required: true, default: false })
+	isUser: boolean;
 }
 
 export const UserGroupSchema = SchemaFactory.createForClass(UserGroup);
