@@ -15,4 +15,36 @@ export class RoomsService {
 		const room = await this.roomModel.create({ ...data });
 		return room;
 	}
+
+	async findByUserId(userId: string) {
+		const rooms = await this.roomModel.find({ userId });
+		return rooms;
+	}
+
+	async findById(roomId: string) {
+		const rooms = await this.roomModel.findById(roomId);
+		return rooms;
+	}
+
+	async addSwitch(roomId: string, switchId: string) {
+		const room = await this.roomModel.findByIdAndUpdate(
+			roomId,
+			{
+				$push: { switches: switchId },
+			},
+			{ new: true },
+		);
+		return room;
+	}
+
+	async removeSwitch(roomId: string, switchId: string) {
+		const room = await this.roomModel.findByIdAndUpdate(
+			roomId,
+			{
+				$pull: { switches: switchId },
+			},
+			{ new: true },
+		);
+		return room;
+	}
 }

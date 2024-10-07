@@ -5,6 +5,9 @@ import { Types } from "mongoose";
 @Schema({ versionKey: false })
 export class Rooms {
 	@Prop({ required: true })
+	userId: string;
+
+	@Prop({ required: true })
 	name: string;
 
 	@Prop()
