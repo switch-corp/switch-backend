@@ -15,7 +15,7 @@ export class Schedules {
   is_active: boolean;
   
   @Prop({ type: [Types.ObjectId], ref: "Switches", default: [] })
-  switches: Switches;
+  switches: Switches[];
 }
 
 export const SchedulesSchema = SchemaFactory.createForClass(Schedules);

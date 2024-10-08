@@ -1,8 +1,9 @@
 /* eslint-disable indent */
 import { ApiProperty } from "@nestjs/swagger";
-import { IsArray, IsDateString, IsString } from "class-validator";
+import { IsArray, IsString } from "class-validator";
+import { CreateScheduleInterface } from "../interfaces/create-schedule.interface";
 
-export class CreateScheduleDto {
+export class CreateScheduleDto implements CreateScheduleInterface {
 	@IsString()
 	@ApiProperty()
 	event_name: string;
