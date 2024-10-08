@@ -22,7 +22,7 @@ export class UserGroupService {
     async findByUserId(userId: string) {
         let userGroup: UserGroup[] = await this.userGroupModel.find({ isUser: true })    
         return userGroup.filter(e => e.users[0].toString() == userId)[0];
-    }s
+    }
 
     async updateOne(id: string, data: UserGroup) {
         const userGroup = await this.userGroupModel.findOne({ _id: id });

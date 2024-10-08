@@ -6,6 +6,7 @@ import { Schedules, SchedulesSchema } from "./schemas/schedules.schema";
 import { ScheduleController } from "./schedule.controller";
 import { EventEmitter } from "stream";
 import { SwitchModule } from "../switch/switch.module";
+import { UserGroupModule } from "../user-groups/user-groups.module";
 
 @Module({
 	imports: [
@@ -13,7 +14,8 @@ import { SwitchModule } from "../switch/switch.module";
 		ScheduleModule.forRoot(),
 		MongooseModule.forFeature([{
 			name: Schedules.name, schema: SchedulesSchema
-		}])
+		}]),
+		UserGroupModule
 	],
 	controllers: [ScheduleController],
 	providers: [ScheduleService, EventEmitter]

@@ -3,11 +3,7 @@ import { IsArray, IsOptional, IsString } from "class-validator";
 import { UpdateUserGroupInterface } from "../interfaces/update-user-group.interface";
 
 export class UpdateUserGroupDto implements UpdateUserGroupInterface {
-
-    constructor (switches: []) {
-        this.switches = switches
-    }
-
+    
     @IsString()
     @IsOptional()
     @ApiProperty()

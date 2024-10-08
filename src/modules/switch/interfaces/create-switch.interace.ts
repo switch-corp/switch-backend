@@ -1,3 +1,4 @@
 export interface CreateSwitchInterface {
-    name: string
+    name: string;
+    arduino_id: string;
 }

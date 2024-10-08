@@ -6,6 +6,7 @@ import { CreateSwitchDto } from "./dtos/create-switch.dto";
 import { CurrentUserDto } from "../user/dtos/current-user.dto";
 import { UserGroupService } from "../user-groups/user-group.service";
 import { UpdateUserGroupDto } from "../user-groups/dtos/update-user-group.dto";
+import { plainToInstance } from "class-transformer";
 
 @Injectable()
 export class SwitchService {
@@ -21,12 +22,26 @@ export class SwitchService {
 		return _switch;
 	}
 
+	async powerOne(state: boolean, arduino_id: string) {
+		const arduino = await this.findByArduinoId(arduino_id);
+		arduino.is_active = state;
+		return await this.switchModel.replaceOne({ _id: arduino.id }, arduino)
+	}
+
+	async findByArduinoId(arduino_id: string) {
+		const _switch = await this.switchModel.findOne({ arduino_id });
+		if (!_switch) throw new NotFoundException("Switch not found")
+		return _switch;
+	}
+
 	async createOne(data: CreateSwitchDto, currentUser: CurrentUserDto) {
 		const _switch = await this.switchModel.create({
 			...data,
 			is_active: false,
 		});
-		await this.userGroupService.updateByUserId(currentUser.id, new UpdateUserGroupDto(_switch.id))
+		const userGroup = await this.userGroupService.findByUserId(currentUser.id);
+		userGroup.switches.push(_switch._id)
+		await this.userGroupService.updateByUserId(currentUser.id, plainToInstance(UpdateUserGroupDto, userGroup))
 		return _switch;
 	}
 }

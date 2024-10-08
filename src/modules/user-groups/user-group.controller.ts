@@ -15,9 +15,4 @@ export class UserGroupController {
     createUserGroup(@Body() body: CreateUserGroupDto) {
         return this.userGroupService.createOne(body);
     }
-
-    @Get("teste/:userId")
-    getUserGroup(@Param("userId") userId: string) {
-        return this.userGroupService.findByUserId(userId);
-    }
 }

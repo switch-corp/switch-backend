@@ -36,6 +36,7 @@
     "bun": "^1.1.26",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
+    "cron-parser": "^4.9.0",
     "eslint": "^8.1.0",
     "joi": "^17.13.1",
     "mongoose": "^8.4.1",

@@ -1,5 +1,4 @@
 import { Module } from "@nestjs/common";
-import { PowerModule } from "./power/power.module";
 import { AppController } from "./app.controller";
 import { SwaggerConfigModule } from "src/config/swaggger/configuration.module";
 import { AppConfigModule } from "src/config/app/consfiguration.module";
@@ -13,7 +12,7 @@ import { AuthConfigModule } from "src/config/auth/configuration.module";
 import { SwitchModule } from "./switch/switch.module";
 import { RoomsModule } from "./rooms/rooms.module";
 import { UserGroupModule } from "./user-groups/user-groups.module";
-// import { SwitchScheduleModule } from "./schedule/schedule.module";
+import { SwitchScheduleModule } from "./schedule/schedule.module";
 
 @Module({
 	imports: [
@@ -24,11 +23,10 @@ import { UserGroupModule } from "./user-groups/user-groups.module";
 		UserModule,
 		UserGroupModule,
 		RoomsModule,
-		// SwitchScheduleModule,
+		SwitchScheduleModule,
 		MongoDatabaseProviderModule,
 		SwaggerConfigModule,
 		SwitchModule,
-		PowerModule,
 	],
 	controllers: [AppController],
 	providers: [

@@ -1,67 +1,63 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-import { Injectable, Logger, OnModuleInit, UnauthorizedException } from "@nestjs/common";
+import { Injectable, Logger, NotFoundException, OnModuleInit, UnauthorizedException } from "@nestjs/common";
 import { CronJob } from "cron";
 import { InjectModel } from "@nestjs/mongoose";
 import { Schedules } from "./schemas/schedules.schema";
 import { Model } from "mongoose";
 import { CreateScheduleDto } from "./dtos/create-schedule";
 import { EventEmitter } from "stream";
-import { SwitchService } from "../switch/switch.service";
-import { SwitchGateway } from "../switch/switch.gateway";
-import { SchedulerRegistry } from "@nestjs/schedule";
+import { Cron, SchedulerRegistry } from "@nestjs/schedule";
+import { UserGroupService } from "../user-groups/user-group.service";
+// import { parseExpression } from "cron-parser";
+import { plainToClass, plainToInstance } from "class-transformer";
+import { UpdateUserGroupDto } from "../user-groups/dtos/update-user-group.dto";
 
 @Injectable()
 export class ScheduleService implements OnModuleInit {
+
 	constructor(
 		@InjectModel(Schedules.name) 
 		private readonly scheduleModel: Model<Schedules>,
 		private readonly eventEmiter: EventEmitter,
-		private readonly switchService: SwitchService,
-		private readonly switchGateway: SwitchGateway,
-		private schedulerRegistry: SchedulerRegistry
+		private readonly schedulerRegistry: SchedulerRegistry,
+		private readonly userGroupService: UserGroupService
 	) {}
-
 	private readonly logger: Logger = new Logger(ScheduleService.name);
 
-	onModuleInit() {
-		this.eventEmiter.on("new-schedule", (schedule) => {
-			console.log(schedule);			
-		});
+	async onModuleInit() {
+		const schedules = await this.scheduleModel.find({})
+		schedules.map(e => this.addCronJob(`${e._id} - ${e.event_name}`, e.event_date))
 	}
 
-	async findOne(_id: string) {
-		const schedule = await this.scheduleModel.find({ _id });
+	// CRUD
+
+	async findOneById(_id: string) {
+		const schedule = await this.scheduleModel.find({ _id }).populate('switches').exec();
 		if (!schedule) {
 			throw new UnauthorizedException("Schedule not found");
 		}
 		return schedule;
 	}
 
-	teste(id: string, state: boolean) {
-		this.switchGateway.emitToSwitch(id, state);
-	}
-
-	async insertOne(data: CreateScheduleDto) {
-		data.switches.map(async e => {
-			await this.switchService.findById(e);
-		});
-
+	async insertOne(data: CreateScheduleDto, userId: string) {
     	const schedule = await this.scheduleModel.create({ ...data, is_active: false});
-    	this.eventEmiter.emit("new-schedule", schedule);
-		this.addCronJob("teste", "5");
+		const userGroup = await this.userGroupService.findByUserId(userId);
+		userGroup.schedules.push(schedule._id);
+		await this.userGroupService.updateByUserId(userId, plainToInstance(UpdateUserGroupDto, userGroup))
+
+		this.addCronJob(`${schedule._id} - ${schedule.event_name}`, schedule.event_date);
+
     	return schedule; 
 	}
 
-	addCronJob(name: string, seconds: string) {
-		const job = new CronJob(`${seconds} * * * * *`, () => {
-		  this.logger.warn(`time (${seconds}) for job ${name} to run!`);
+	//cron job
+
+	addCronJob(name: string, time: string) {
+		const job = new CronJob(time, () => {
+			this.logger.debug(name)
 		});
-	  
 		this.schedulerRegistry.addCronJob(name, job);
+		this.logger.warn(`iniciando ${name}`)
 		job.start();
-	  
-		this.logger.warn(
-		  `job ${name} added for each minute at ${seconds} seconds!`,
-		);
 	  }
 }

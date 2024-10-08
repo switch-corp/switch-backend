@@ -1,8 +1,10 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-import { Body, Controller, Param, Post } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post } from "@nestjs/common";
 import { ScheduleService } from "./schedule.service";
 import { CreateScheduleDto } from "./dtos/create-schedule";
 import { ApiTags } from "@nestjs/swagger";
+import { CurrentUser } from "src/common/decorators/current-user.decorator";
+import { CurrentUserDto } from "../user/dtos/current-user.dto";
 
 @ApiTags("Schedule")
 @Controller("/schedule")
@@ -11,13 +13,14 @@ export class ScheduleController {
 		private readonly scheduleService: ScheduleService
 	) {}
 
-    @Post("/create")
-	createSchedule(@Body() request: CreateScheduleDto) {
-		return this.scheduleService.insertOne(request);
+	@Get("/teste/:id")
+	get(@Param("id") id: string) {
+		return this.scheduleService.findOneById(id);
 	}
 
-	@Post("/teste/:id")
-    teste(@Param("id") id: string){
-    	return this.scheduleService.teste(id, false);
-    }
+    @Post("/create")
+	createSchedule(@Body() request: CreateScheduleDto, @CurrentUser() user: CurrentUserDto) {
+		return this.scheduleService.insertOne(request, user.id);
+	}
+
 }

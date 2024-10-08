@@ -7,9 +7,9 @@ export class CreateScheduleDto {
 	@ApiProperty()
 	event_name: string;
 
-	@IsDateString()
+	@IsString()
 	@ApiProperty()
-	event_date: Date;
+	event_date: string;
 
 	@IsArray()
 	@ApiProperty()
