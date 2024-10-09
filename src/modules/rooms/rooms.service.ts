@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { CreateRoomDto } from "./dto/create-room.dto";
 import { InjectModel } from "@nestjs/mongoose";
 import { Rooms } from "./schemas/rooms.schema";
@@ -18,7 +18,13 @@ export class RoomsService {
 
 	async findByUserId(userId: string) {
 		const rooms = await this.roomModel.find({ userId });
-		return rooms;
+		let list = await Promise.all(
+			rooms.map(async room => {
+				return await room.populate("switches");
+			})
+		);
+		
+		return list;
 	}
 
 	async findById(roomId: string) {

@@ -10,7 +10,6 @@ import { UserGroupService } from "../user-groups/user-group.service";
 // import { parseExpression } from "cron-parser";
 import { plainToInstance } from "class-transformer";
 import { UpdateUserGroupDto } from "../user-groups/dtos/update-user-group.dto";
-import { UserGroup } from "../user-groups/schemas/user-groups.schema";
 import { SwitchService } from "../switch/switch.service";
 import { UpdateScheduleDto } from "./dtos/update-schedule";
 

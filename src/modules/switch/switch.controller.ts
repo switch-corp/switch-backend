@@ -1,10 +1,11 @@
 import { Body, Controller, Get, Param, Post } from "@nestjs/common";
 import { SwitchService } from "./switch.service";
 import { CreateSwitchDto } from "./dtos/create-switch.dto";
-import { ApiTags } from "@nestjs/swagger";
+import { ApiOkResponse, ApiTags } from "@nestjs/swagger";
 import { CurrentUser } from "src/common/decorators/current-user.decorator";
 import { CurrentUserDto } from "../user/dtos/current-user.dto";
 import { PowerDto } from "./dtos/power.dto";
+import { Switches } from "./schemas/switches.schema";
 
 @ApiTags("Switch")
 @Controller("/switch")
@@ -15,6 +16,7 @@ export class SwitchController {
 	) {}
 
 	@Get("/arduino/:arduino_id")
+	@ApiOkResponse({ type: Switches })
 	findSwitchByArduinoId(@Param("arduino_id") id: string) {
 		return this.switchService.findByArduinoId(id)
 	}
