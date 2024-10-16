@@ -6,6 +6,7 @@ import { CurrentUser } from "src/common/decorators/current-user.decorator";
 import { CurrentUserDto } from "../user/dtos/current-user.dto";
 import { PowerDto } from "./dtos/power.dto";
 import { Switches } from "./schemas/switches.schema";
+import { isPublic } from "../auth/decorators/isPulic.decorator";
 
 @ApiTags("Switch")
 @Controller("/switch")
@@ -15,12 +16,14 @@ export class SwitchController {
         private readonly switchService: SwitchService
 	) {}
 
+	@isPublic()
 	@Get("/arduino/:arduino_id")
 	@ApiOkResponse({ type: Switches })
 	findSwitchByArduinoId(@Param("arduino_id") id: string) {
 		return this.switchService.findByArduinoId(id)
 	}
 
+	@isPublic()
 	@Post("/power/:arduino_id")
 	powerOne(@Param("arduino_id") id: string, @Body() request: PowerDto ) {
 		return this.switchService.powerOne(request.state, id);
