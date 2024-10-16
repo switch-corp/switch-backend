@@ -14,7 +14,7 @@ import { UserGroupModule } from "../user-groups/user-groups.module";
 		UserGroupModule
 	],
 	controllers: [SwitchController],
-	providers: [SwitchService, SwitchGateway],
-	exports: [SwitchService, SwitchGateway]
+	providers: [SwitchService],
+	exports: [SwitchService]
 })
 export class SwitchModule {}
