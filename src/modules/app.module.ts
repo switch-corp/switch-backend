@@ -17,7 +17,7 @@ import { SwitchScheduleModule } from "./schedule/schedule.module";
 @Module({
 	imports: [
 		AppConfigModule,
-		AppGateway,
+		// AppGateway,
 		AuthConfigModule,
 		AuthModule,
 		UserModule,
