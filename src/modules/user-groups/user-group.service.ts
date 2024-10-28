@@ -20,8 +20,9 @@ export class UserGroupService {
     }
 
     async findByUserId(userId: string) {
-        let userGroup: UserGroup[] = await this.userGroupModel.find({ isUser: true })    
-        return userGroup.filter(e => e.users[0].toString() == userId)[0];
+        const usersGroup: UserGroup[] = await this.userGroupModel.find({ isUser: true })    
+        let userGroup = usersGroup.filter(e => e.users[0].toString() == userId)[0]
+        return userGroup.populate(["users", "schedules", "switches", "rooms"]);
     }
 
     async updateOne(id: string, data: UserGroup) {

@@ -3,6 +3,8 @@ import { UserGroupService } from "./user-group.service";
 import { CreateUserGroupDto } from "./dtos/create-user-group.dto";
 import { ApiTags } from "@nestjs/swagger";
 import { UpdateUserGroupDto } from "./dtos/update-user-group.dto";
+import { CurrentUser } from "src/common/decorators/current-user.decorator";
+import { CurrentUserDto } from "../user/dtos/current-user.dto";
 
 @ApiTags("UserGroups")
 @Controller("usergroups")
@@ -11,8 +13,8 @@ export class UserGroupController {
         private readonly userGroupService: UserGroupService
     ) {}
 
-    @Post()
-    createUserGroup(@Body() body: CreateUserGroupDto) {
-        return this.userGroupService.createOne(body);
+    @Get()
+    findByUSerId(@CurrentUser() user: CurrentUserDto) {
+        return this.userGroupService.findByUserId(user.id);
     }
 }
