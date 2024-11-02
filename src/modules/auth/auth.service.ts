@@ -8,42 +8,43 @@ import { UserSignInDto } from "./dtos/user-signin.dto";
 
 @Injectable()
 export class AuthService {
-	constructor (
-        private readonly authConfiguration: AuthConfigService,
-        private readonly userService: UserService,
-        private readonly jwtService: JwtService
+	constructor(
+		private readonly authConfiguration: AuthConfigService,
+		private readonly userService: UserService,
+		private readonly jwtService: JwtService,
 	) {}
 
 	async findUser(data: UserSignInDto) {
 		const user = await this.userService.findByEmail(data.email);
-            
-		if(!(await bcrypt.compare(data.password, user.password))) throw new UnauthorizedException("Email ou senha incorretos");
 
-		const payload = { 
-			id: user._id, 
-			username: user.name, 
-			email: user.email, 
+		if (!(await bcrypt.compare(data.password, user.password)))
+			throw new UnauthorizedException("Email ou senha incorretos");
+
+		const payload = {
+			id: user._id,
+			username: user.name,
+			email: user.email,
 		};
 
 		return {
-			acess_token: await this.jwtService.signAsync(payload, {
-				secret: this.authConfiguration.secret
-			})
+			access_token: await this.jwtService.signAsync(payload, {
+				secret: this.authConfiguration.secret,
+			}),
 		};
 	}
 
 	async createUser(data: CreateUserDto) {
 		const user = await this.userService.createOne(data);
-		const payload = { 
-			id: user._id, 
-			username: user.name, 
-			email: user.email
+		const payload = {
+			id: user._id,
+			username: user.name,
+			email: user.email,
 		};
 
 		return {
-			acess_token: await this.jwtService.signAsync(payload, {
-				secret: this.authConfiguration.secret
-			})
+			access_token: await this.jwtService.signAsync(payload, {
+				secret: this.authConfiguration.secret,
+			}),
 		};
 	}
 }

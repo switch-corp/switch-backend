@@ -22,14 +22,14 @@ export class RoomsController {
 		private readonly jwtService: JwtService,
 	) {}
 
-	@Post("")
+	@Post("/create")
 	async createRoom(@CurrentUser() user, @Body() body: CreateRoomRequestDto) {
 		const data = { userId: user.id, ...body };
 
 		return this.roomsService.createOne(data);
 	}
 
-	@Get("")
+	@Get("/all")
 	async findAll(@CurrentUser() user) {
 		return this.roomsService.findByUserId(user.id);
 	}
