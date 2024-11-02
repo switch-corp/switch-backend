@@ -15,7 +15,7 @@ export class AuthService {
 	) {}
 
 	async findUser(data: UserSignInDto) {
-		const user = await this.userService.findByEmail(data.email);
+		const user = await this.userService.findByEmail(data.email).catch(() => { throw new UnauthorizedException("Email ou senha incorretos") });
             
 		if(!(await bcrypt.compare(data.password, user.password))) throw new UnauthorizedException("Email ou senha incorretos");
 
