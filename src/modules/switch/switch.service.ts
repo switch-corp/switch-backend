@@ -7,6 +7,7 @@ import { CurrentUserDto } from "../user/dtos/current-user.dto";
 import { UserGroupService } from "../user-groups/user-group.service";
 import { UpdateUserGroupDto } from "../user-groups/dtos/update-user-group.dto";
 import { plainToInstance } from "class-transformer";
+import { UpdateSwitchDto } from "./dtos/update-switch.dto";
 
 @Injectable()
 export class SwitchService {
@@ -43,5 +44,11 @@ export class SwitchService {
 		userGroup.switches.push(_switch._id)
 		await this.userGroupService.updateByUserId(currentUser.id, plainToInstance(UpdateUserGroupDto, userGroup))
 		return _switch;
+	}
+
+	async updateOneById(_id: string, data: UpdateSwitchDto) {
+		const _switch = await this.findById(_id);
+		Object.assign(_switch, data)
+		return await this.switchModel.replaceOne({ _id }, _switch)
 	}
 }

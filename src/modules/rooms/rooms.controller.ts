@@ -61,11 +61,11 @@ export class RoomsController {
 		return this.roomsService.addSwitch(roomid, switchid);
 	}
 
-	@Delete(":roomid/:switchid")
-	async removeSwitch(
-		@Param("roomid") roomid: string,
-		@Param("switchid") switchid: string,
+	@Delete(":roomid")
+	@HttpCode(HttpStatus.NO_CONTENT)
+	async deleteRoom(
+		@Param("roomid") roomid: string
 	) {
-		return this.roomsService.removeSwitch(roomid, switchid);
+		return this.roomsService.deleteOne(roomid);
 	}
 }

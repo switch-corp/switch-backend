@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from "@nestjs/common";
+import { Body, Controller, Get, Param, Patch, Post, Headers, HttpCode, HttpStatus } from "@nestjs/common";
 import { SwitchService } from "./switch.service";
 import { CreateSwitchDto } from "./dtos/create-switch.dto";
 import { ApiOkResponse, ApiTags } from "@nestjs/swagger";
@@ -7,6 +7,7 @@ import { CurrentUserDto } from "../user/dtos/current-user.dto";
 import { PowerDto } from "./dtos/power.dto";
 import { Switches } from "./schemas/switches.schema";
 import { isPublic } from "../auth/decorators/isPulic.decorator";
+import { UpdateSwitchDto } from "./dtos/update-switch.dto";
 
 @ApiTags("Switch")
 @Controller("/switch")
@@ -32,6 +33,14 @@ export class SwitchController {
     @Post("/create")
 	createSwicth(@Body() request: CreateSwitchDto, @CurrentUser() user: CurrentUserDto) {
 		return this.switchService.createOne(request, user);
+	}
+
+	@Patch("/update")
+	@HttpCode(HttpStatus.NO_CONTENT)
+	updateSwicth(@Headers("switch_id") id: string, @Body() request: UpdateSwitchDto) {
+		console.log(id);
+		
+		return this.switchService.updateOneById(id, request);
 	}
 
 }

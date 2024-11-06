@@ -56,14 +56,8 @@ export class RoomsService {
 		return await this.roomModel.replaceOne({ _id: roomId }, room);
 	}
 
-	async removeSwitch(roomId: string, switchId: string) {
-		const room = await this.roomModel.findByIdAndUpdate(
-			roomId,
-			{
-				$pull: { switches: switchId },
-			},
-			{ new: true },
-		);
-		return room;
+	async deleteOne(roomId: string) {
+		const room = await this.findById(roomId)
+		return room.deleteOne()
 	}
 }
