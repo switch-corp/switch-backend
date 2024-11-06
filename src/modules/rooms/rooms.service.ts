@@ -28,8 +28,8 @@ export class RoomsService {
 	}
 
 	async findById(roomId: string) {
-		const rooms = await this.roomModel.findById(roomId);
-		return rooms;
+		const room = await this.roomModel.findById(roomId);
+		return room.populate("switches");
 	}
 
 	async addSwitch(roomId: string, switchId: string) {

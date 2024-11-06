@@ -13,6 +13,7 @@ import { RoomsService } from "./rooms.service";
 import { CreateRoomRequestDto } from "./dto/create-room.dto";
 import { JwtService } from "@nestjs/jwt";
 import { CurrentUser } from "src/common/decorators/current-user.decorator";
+import { CurrentUserDto } from "../user/dtos/current-user.dto";
 
 @ApiTags("Rooms")
 @Controller("rooms")
@@ -23,14 +24,14 @@ export class RoomsController {
 	) {}
 
 	@Post("")
-	async createRoom(@CurrentUser() user, @Body() body: CreateRoomRequestDto) {
+	async createRoom(@CurrentUser() user: CurrentUserDto, @Body() body: CreateRoomRequestDto) {
 		const data = { userId: user.id, ...body };
 
 		return this.roomsService.createOne(data);
 	}
 
 	@Get("")
-	async findAll(@CurrentUser() user) {
+	async findAll(@CurrentUser() user: CurrentUserDto) {
 		return this.roomsService.findByUserId(user.id);
 	}
 
