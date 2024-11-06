@@ -53,6 +53,7 @@ export class RoomsController {
 	}
 
 	@Patch(":roomid/:switchid")
+	@HttpCode(HttpStatus.NO_CONTENT)
 	async addSwitch(
 		@Param("roomid") roomid: string,
 		@Param("switchid") switchid: string,
