@@ -30,6 +30,13 @@ export class UserGroupService {
             "rooms"]);
     }
 
+    async findByUserIdNonReated(userId: string) {
+        const usersGroup: UserGroup[] = await this.userGroupModel.find({ isUser: true });
+        let userGroup = usersGroup.filter(e => e.users[0].toString() == userId)[0];
+        
+        return userGroup
+    }
+
     async updateOne(id: string, data: UserGroup) {
         const userGroup = await this.userGroupModel.findOne({ _id: id });
         if(!userGroup) throw new NotFoundException("User group not found");

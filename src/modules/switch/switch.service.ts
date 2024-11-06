@@ -39,7 +39,7 @@ export class SwitchService {
 			...data,
 			is_active: false,
 		});
-		const userGroup = await this.userGroupService.findByUserId(currentUser.id);
+		const userGroup = await this.userGroupService.findByUserIdNonReated(currentUser.id);
 		userGroup.switches.push(_switch._id)
 		await this.userGroupService.updateByUserId(currentUser.id, plainToInstance(UpdateUserGroupDto, userGroup))
 		return _switch;
