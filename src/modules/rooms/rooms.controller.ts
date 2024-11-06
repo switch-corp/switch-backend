@@ -4,6 +4,8 @@ import {
 	Delete,
 	Get,
 	Headers,
+	HttpCode,
+	HttpStatus,
 	Param,
 	Patch,
 	Post,
@@ -14,6 +16,7 @@ import { CreateRoomRequestDto } from "./dto/create-room.dto";
 import { JwtService } from "@nestjs/jwt";
 import { CurrentUser } from "src/common/decorators/current-user.decorator";
 import { CurrentUserDto } from "../user/dtos/current-user.dto";
+import { UpdateRoomRequestDto } from "./dto/update-room.dto";
 
 @ApiTags("Rooms")
 @Controller("rooms")
@@ -38,6 +41,15 @@ export class RoomsController {
 	@Get(":id")
 	async findRoom(@Param("id") id: string) {
 		return this.roomsService.findById(id);
+	}
+
+	@Patch(":roomid")
+	@HttpCode(HttpStatus.CREATED)
+	async updateRoom(
+		@Param("roomid") roomId: string,
+		@Body() request: UpdateRoomRequestDto
+	) {
+		return this.roomsService.updateOne(request, roomId);
 	}
 
 	@Patch(":roomid/:switchid")

@@ -1,17 +1,20 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsArray, IsString } from "class-validator";
+import { IsArray, IsNotEmpty, IsString } from "class-validator";
 import { Types } from "mongoose";
 
 export class CreateRoomRequestDto {
 	@IsString()
+	@IsNotEmpty()
 	@ApiProperty()
 	name: string;
 
 	@IsString()
 	@ApiProperty()
+	@IsNotEmpty()
 	description: string;
 
 	@IsArray()
+	@IsNotEmpty()
 	@ApiProperty()
 	switches: Types.ObjectId[];
 }

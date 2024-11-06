@@ -3,6 +3,7 @@ import { CreateRoomDto } from "./dto/create-room.dto";
 import { InjectModel } from "@nestjs/mongoose";
 import { Rooms } from "./schemas/rooms.schema";
 import { Model } from "mongoose";
+import { UpdateRoomRequestDto } from "./dto/update-room.dto";
 
 @Injectable()
 export class RoomsService {
@@ -30,6 +31,13 @@ export class RoomsService {
 	async findById(roomId: string) {
 		const room = await this.roomModel.findById(roomId);
 		return room.populate("switches");
+	}
+
+	async updateOne(data: UpdateRoomRequestDto, roomId: string) {
+		const room = await this.roomModel.findById(roomId)
+		if (!room) throw new NotFoundException("Schedule not found")
+		Object.assign(room, data)
+		return await this.roomModel.replaceOne({ _id: roomId }, room)
 	}
 
 	async addSwitch(roomId: string, switchId: string) {
