@@ -44,7 +44,7 @@ export class ScheduleService implements OnModuleInit {
 
 	async insertOne(data: CreateScheduleDto, userId: string) {
     	const schedule = await this.scheduleModel.create({ ...data, is_active: false});
-		const userGroup = await this.userGroupService.findByUserId(userId);
+		const userGroup = await this.userGroupService.findByUserIdNotPopulated(userId);
 
 		userGroup.schedules.push(schedule._id);
 		await this.userGroupService.updateByUserId(userId, plainToInstance(UpdateUserGroupDto, userGroup));
