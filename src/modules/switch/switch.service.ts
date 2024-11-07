@@ -51,4 +51,9 @@ export class SwitchService {
 		Object.assign(_switch, data)
 		return await this.switchModel.replaceOne({ _id }, _switch)
 	}
+
+	async deleteOne(roomId: string) {
+		const _switch = await this.findById(roomId)
+		return _switch.deleteOne()
+	}
 }

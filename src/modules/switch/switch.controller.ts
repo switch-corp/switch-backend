@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Patch, Post, Headers, HttpCode, HttpStatus } from "@nestjs/common";
+import { Body, Controller, Get, Param, Patch, Post, Headers, HttpCode, HttpStatus, Delete } from "@nestjs/common";
 import { SwitchService } from "./switch.service";
 import { CreateSwitchDto } from "./dtos/create-switch.dto";
 import { ApiOkResponse, ApiTags } from "@nestjs/swagger";
@@ -38,9 +38,14 @@ export class SwitchController {
 	@Patch("/update")
 	@HttpCode(HttpStatus.NO_CONTENT)
 	updateSwicth(@Headers("switch_id") id: string, @Body() request: UpdateSwitchDto) {
-		console.log(id);
-		
 		return this.switchService.updateOneById(id, request);
 	}
 
+	@Delete(":switch_id")
+	@HttpCode(HttpStatus.NO_CONTENT)
+	async deleteSwitch(
+		@Param("switch_id") roomid: string
+	) {
+		return this.switchService.deleteOne(roomid);
+	}
 }
