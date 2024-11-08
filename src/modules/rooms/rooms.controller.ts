@@ -17,6 +17,7 @@ import { JwtService } from "@nestjs/jwt";
 import { CurrentUser } from "src/common/decorators/current-user.decorator";
 import { CurrentUserDto } from "../user/dtos/current-user.dto";
 import { UpdateRoomRequestDto } from "./dto/update-room.dto";
+import { AddSwitchesDTO } from "./dto/add.switches.dto";
 
 @ApiTags("Rooms")
 @Controller("rooms")
@@ -52,11 +53,11 @@ export class RoomsController {
 		return this.roomsService.updateOne(request, roomId);
 	}
 
-	@Patch(":roomid/:switchid")
+	@Patch(":roomid/switches")
 	@HttpCode(HttpStatus.NO_CONTENT)
 	async addSwitch(
 		@Param("roomid") roomid: string,
-		@Param("switchid") switchid: string,
+		@Body() switchid: AddSwitchesDTO,
 	) {
 		return this.roomsService.addSwitch(roomid, switchid);
 	}

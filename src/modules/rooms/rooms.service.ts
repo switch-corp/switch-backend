@@ -4,6 +4,7 @@ import { InjectModel } from "@nestjs/mongoose";
 import { Rooms } from "./schemas/rooms.schema";
 import { Model, Types } from "mongoose";
 import { UpdateRoomRequestDto } from "./dto/update-room.dto";
+import { AddSwitchesDTO } from "./dto/add.switches.dto";
 
 @Injectable()
 export class RoomsService {
@@ -40,24 +41,46 @@ export class RoomsService {
 		return await this.roomModel.replaceOne({ _id: roomId }, room)
 	}
 
-	async addSwitch(roomId: string, switchId: string) {
+	async addSwitch(roomId: string, ids: AddSwitchesDTO) {
 		let room = await this.roomModel.findById(roomId);
-		if (!room) throw new NotFoundException("Room not found");		
-		if(!!(room.switches.find(e => e.toString() == switchId))) {
-			room.switches = room.switches.filter(e => e.toString() != switchId)
-		} else {
-			return await this.roomModel.findByIdAndUpdate(roomId, {
-				$push: {
-					switches: switchId
-				}
-			})
+		if (!room) throw new NotFoundException("Room not found");
+
+		for (let i in ids.switches) {			
+			if(room.switches.find(e => e.toString() == ids.switches[i])) {
+				await this.roomModel.findByIdAndUpdate(roomId, { 
+					$pull: {
+						switches: ids.switches[i]
+					}
+				 })
+			} else {
+				await this.roomModel.findByIdAndUpdate(roomId, { 
+					$push: {
+						switches: ids.switches[i]
+					}
+					})
+			}
 		}
-		
-		return await this.roomModel.replaceOne({ _id: roomId }, room);
 	}
 
 	async deleteOne(roomId: string) {
 		const room = await this.findById(roomId)
 		return room.deleteOne()
+	}
+
+	appendSwitch(switches: string[]) {
+
+	// 			// if(!!(room.switches.find(e => e.toString() == switchId))) {
+	// 	// 	room.switches = room.switches.filter(e => e.toString() != switchId)
+	// 	// } else {
+	// 		return await this.roomModel.findByIdAndUpdate(roomId, {
+	// 			$push: {
+	// 				switches: 
+	// 			}
+	// 		})
+	// 	// }
+		
+	// 	// return await this.roomModel.replaceOne({ _id: roomId }, room);
+	// }
+		return null
 	}
 }
