@@ -1,5 +1,5 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-import { Body, Controller, Get, Param, Post, Put } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
 import { ScheduleService } from "./schedule.service";
 import { CreateScheduleDto } from "./dtos/create-schedule";
 import { ApiTags } from "@nestjs/swagger";
@@ -27,6 +27,11 @@ export class ScheduleController {
 	@Put("/update/:id")
 	updateSwitch(@Param("id") id: string, @Body() body: UpdateScheduleDto) {
 		return this.scheduleService.updateOneById(id, body)
+	}
+
+	@Delete("/:id")
+	deleteSchedule(@Param("id") id: string) {
+		return this.scheduleService.deleteOne(id)
 	}
 
 }

@@ -60,6 +60,12 @@ export class ScheduleService implements OnModuleInit {
 		return await this.scheduleModel.replaceOne({ _id }, schedule)
 	}
 
+	async deleteOne(roomId: string) {
+		const schedule = await this.scheduleModel.findById(roomId)
+		if(!schedule) throw new NotFoundException("Schedule not found")
+		return schedule.deleteOne()
+	}
+
 	//cron job
 
 	addCronJob(name: string, time: string, _id: string) {
