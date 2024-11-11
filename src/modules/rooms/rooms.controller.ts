@@ -18,6 +18,8 @@ import { CurrentUser } from "src/common/decorators/current-user.decorator";
 import { CurrentUserDto } from "../user/dtos/current-user.dto";
 import { UpdateRoomRequestDto } from "./dto/update-room.dto";
 import { AddSwitchesDTO } from "./dto/add.switches.dto";
+import { PowerDto } from "../switch/dtos/power.dto";
+import { isPublic } from "../auth/decorators/isPulic.decorator";
 
 @ApiTags("Rooms")
 @Controller("rooms")
@@ -32,6 +34,11 @@ export class RoomsController {
 		const data = { userId: user.id, ...body };
 
 		return this.roomsService.createOne(data);
+	}
+
+	@Post("/power/:roomId")
+	async changeState(@Body() state: PowerDto, @Param("roomId") roomId: string) {
+		return this.roomsService.changeState(state.state, roomId);
 	}
 
 	@Get("")

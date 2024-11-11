@@ -5,13 +5,22 @@ import { Rooms } from "./schemas/rooms.schema";
 import { Model, Types } from "mongoose";
 import { UpdateRoomRequestDto } from "./dto/update-room.dto";
 import { AddSwitchesDTO } from "./dto/add.switches.dto";
+import { SwitchService } from "../switch/switch.service";
 
 @Injectable()
 export class RoomsService {
 	constructor(
 		@InjectModel(Rooms.name)
 		private readonly roomModel: Model<Rooms>,
+		private readonly switchService: SwitchService
 	) {}
+
+	async changeState(state: boolean, roomId: string) {
+		const room = await this.findById(roomId);
+		room.switches.map(async e => {
+			return await this.switchService.powerOne(state, e.arduino_id)
+		})
+	}
 
 	async createOne(data: CreateRoomDto) {
 		const room = await this.roomModel.create({ ...data });
@@ -31,6 +40,7 @@ export class RoomsService {
 
 	async findById(roomId: string) {
 		const room = await this.roomModel.findById(roomId);
+		if (!room) throw new NotFoundException("Room not found")
 		return room.populate("switches");
 	}
 

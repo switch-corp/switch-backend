@@ -13,7 +13,7 @@ import { SwitchModule } from "../switch/switch.module";
 				name: Rooms.name,
 				schema: RoomsSchema,
 			},
-		]),
+		])
 	],
 	providers: [RoomsService],
 	controllers: [RoomsController],

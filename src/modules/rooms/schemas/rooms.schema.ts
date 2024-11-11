@@ -1,6 +1,7 @@
 /* eslint-disable indent */
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Types } from "mongoose";
+import { Switches } from "src/modules/switch/schemas/switches.schema";
 
 @Schema({ versionKey: false })
 export class Rooms {
@@ -14,7 +15,7 @@ export class Rooms {
 	description: string;
 
 	@Prop({ type: [Types.ObjectId], ref: "Switches", default: [] })
-	switches: Types.ObjectId[];
+	switches: Types.ObjectId[] | Switches[];
 }
 
 export const RoomsSchema = SchemaFactory.createForClass(Rooms);
