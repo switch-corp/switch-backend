@@ -6,6 +6,8 @@ import { Model, Types } from "mongoose";
 import { UpdateRoomRequestDto } from "./dto/update-room.dto";
 import { AddSwitchesDTO } from "./dto/add.switches.dto";
 import { SwitchService } from "../switch/switch.service";
+import { Switches } from "../switch/schemas/switches.schema";
+import { stat } from "fs/promises";
 
 @Injectable()
 export class RoomsService {
@@ -39,9 +41,19 @@ export class RoomsService {
 	}
 
 	async findById(roomId: string) {
-		const room = await this.roomModel.findById(roomId);
+		let state = true;
+		let room = await this.roomModel.findById(roomId).populate("switches");;
 		if (!room) throw new NotFoundException("Room not found")
-		return room.populate("switches");
+
+		let populatedRoom = room.toObject()
+		
+		if (room.switches.length == 0) state = false
+		if(populatedRoom.switches.find((e: Switches) => e.is_active == false)) {
+			state = false
+		}
+
+		return {...populatedRoom, state}
+		
 	}
 
 	async updateOne(data: UpdateRoomRequestDto, roomId: string) {
@@ -73,8 +85,8 @@ export class RoomsService {
 	}
 
 	async deleteOne(roomId: string) {
-		const room = await this.findById(roomId)
-		return room.deleteOne()
+		const room = await this.roomModel.findByIdAndDelete(roomId)
+		return room;
 	}
 
 	appendSwitch(switches: string[]) {
